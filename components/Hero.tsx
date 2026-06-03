@@ -1,83 +1,53 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 import site, { tagline } from "../data/site";
 import { motion } from "framer-motion";
 
 const roles = [
+  "Web Developer",
   "Full Stack Developer",
   "Flutter Developer",
   "Problem Solver",
   "Hackathon Enthusiast",
 ];
 
-function useTyping(elRef: any) {
+function useTypingText() {
+  const [text, setText] = useState(roles[0]);
+
   useEffect(() => {
-    const el = elRef.current;
-    if (!el) return;
     let idx = 0;
-    let i = 0;
-    let timeout: any;
+    let letter = 0;
+    let timeout: ReturnType<typeof setTimeout>;
+
     const tick = () => {
       const full = roles[idx];
-      i++;
-      el.textContent = full.slice(0, i);
-      if (i >= full.length) {
-        // wait a bit then move to next role
+      letter += 1;
+      setText(full.slice(0, letter));
+
+      if (letter >= full.length) {
         timeout = setTimeout(() => {
-          i = 0;
+          letter = 0;
           idx = (idx + 1) % roles.length;
-          el.textContent = "";
+          setText("");
           timeout = setTimeout(tick, 80);
         }, 800);
       } else {
         timeout = setTimeout(tick, 80);
       }
     };
-    // start immediately so first char shows without delay
-    tick();
+
+    timeout = setTimeout(tick, 80);
+
     return () => {
-      if (timeout) clearTimeout(timeout);
+      clearTimeout(timeout);
     };
-  }, [elRef]);
+  }, []);
+
+  return text;
 }
 
 export default function Hero() {
-  const typingRef = useRef<HTMLSpanElement | null>(null);
-  useTyping(typingRef);
-
-  useEffect(() => {
-    // Dynamically import GSAP so it doesn't bloat initial client bundle
-    let ctx: any;
-    let mounted = true;
-    import("gsap").then(({ gsap }) => {
-      if (!mounted) return;
-      ctx = gsap.context(() => {
-        const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-        tl.from(".hero-name", { y: 40, opacity: 0, duration: 0.8 }).from(
-          ".hero-sub",
-          { y: 20, opacity: 0, duration: 0.6 },
-          "-=0.4",
-        );
-        gsap.to(".blob", {
-          rotation: 360,
-          repeat: -1,
-          duration: 30,
-          ease: "none",
-        });
-        gsap.to(".floating", {
-          y: "-=20",
-          yoyo: true,
-          repeat: -1,
-          duration: 4,
-          ease: "sine.inOut",
-        });
-      });
-    });
-    return () => {
-      mounted = false;
-      if (ctx) ctx.revert();
-    };
-  }, []);
+  const typedText = useTypingText();
 
   return (
     <section
@@ -92,17 +62,10 @@ export default function Hero() {
             transition={{ duration: 0.6 }}
             className="hero-name text-4xl md:text-6xl font-extrabold leading-tight"
           >
-            {(() => {
-              const parts = site.name.split(" ");
-              const first = parts.shift() || "";
-              const rest = parts.join(" ");
-              return (
-                <>
-                  <span className="text-[color:var(--primary)]">{first}</span>{" "}
-                  {rest}
-                </>
-              );
-            })()}
+            I am{" "}
+            <span className="text-[color:var(--primary)]">
+              {site.name.split(" ")[0]}
+            </span>
           </motion.h1>
 
           <motion.h2
@@ -111,12 +74,9 @@ export default function Hero() {
             transition={{ delay: 0.2 }}
             className="hero-sub text-xl md:text-2xl text-[color:var(--muted)] mt-4"
           >
-            I am a{" "}
-            <span
-              ref={typingRef}
-              className="font-medium text-[color:var(--text)]"
-            >
-              {roles[0].slice(0, 1)}
+            I am{" "}
+            <span className="font-medium text-[color:var(--text)]">
+              {typedText || roles[0]}
             </span>
             <span
               className="inline-block w-1 h-5 align-middle ml-1 bg-[color:var(--muted)] animate-pulse"
