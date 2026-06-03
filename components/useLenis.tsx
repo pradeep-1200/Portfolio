@@ -7,7 +7,7 @@ export default function useLenis() {
     let rafId: any = null;
     const setup = async () => {
       try {
-        const mod = await import("@studio-freight/lenis");
+        const mod = await import("lenis");
         const Lenis = mod.default ?? mod;
         lenisInstance = new Lenis({ lerp: 0.08 });
         const loop = (time: any) => {
