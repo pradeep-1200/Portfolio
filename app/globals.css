@@ -100,23 +100,131 @@ body {
   box-shadow: 0 6px 18px rgba(239, 68, 68, 0.16);
 }
 
-/* Projects card styles */
-.project-card{ position: relative; overflow: hidden; padding-bottom: 18px }
-.project-card .icon-placeholder{ width:34px; height:34px; border-radius:8px; background: rgba(56,189,248,0.08); display:flex; align-items:center; justify-content:center; transform: translateY(0); }
-.project-card .icon-placeholder svg{ display:block; color:#06b6d4 }
-.project-card .github-action{ display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:6px; background: transparent; color:var(--muted); border:none; text-decoration:none }
-.project-card .github-action svg{ color:var(--muted) }
-.project-card h4{ margin-top:6px }
-.project-card .project-tag{ background: transparent; border:1px solid rgba(6,182,212,0.12); color: #06b6d4; padding-left:8px; padding-right:8px; padding-top:5px; padding-bottom:5px }
+/* ── Project card – new design ── */
+.project-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 22px 22px 20px;
+  border-radius: 14px;
+  /* Light theme: clean white card */
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+  transition: transform 200ms ease, box-shadow 200ms ease;
+  overflow: hidden;
+}
 
-/* Align year as a small pill to the right of the title on wider screens */
-.project-card .year-pill{ position: absolute; top:14px; right:14px; font-size:0.78rem; color:var(--primary); }
+/* Dark theme card */
+:root[data-theme="dark"] .project-card {
+  background: #161b27;
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 6px 32px rgba(0, 0, 0, 0.55);
+}
 
-:root[data-theme="dark"] .project-card{ background: rgba(10,12,17,0.5); }
-:root[data-theme="dark"] .project-card .project-tag{ border-color: rgba(6,182,212,0.15); color: #06b6d4 }
+/* Hover lift */
+.project-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+:root[data-theme="dark"] .project-card:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7);
+}
 
-/* subtle hover lift for card */
-.project-card:hover{ transform: translateY(-6px); transition: transform 180ms ease }
+/* Top row: icon + github */
+.pc-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+/* Cyan icon */
+.pc-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #06b6d4;
+}
+.pc-icon-wrap svg { display: block; }
+
+/* GitHub button */
+.pc-github-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: transparent;
+  color: #9ca3af;
+  border: none;
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+.pc-github-btn:hover { color: #06b6d4; }
+.pc-github-btn svg { display: block; }
+
+/* Title – dark in light mode, light in dark mode */
+.pc-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 6px;
+  line-height: 1.3;
+}
+:root[data-theme="dark"] .pc-title {
+  color: #f1f5f9;
+}
+
+/* Year – cyan for both themes */
+.pc-year {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #06b6d4;
+  margin-bottom: 12px;
+  letter-spacing: 0.02em;
+}
+
+/* Description – muted in light mode, slate in dark mode */
+.pc-desc {
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: #6b7280;
+  margin: 0 0 18px;
+  flex: 1;
+}
+:root[data-theme="dark"] .pc-desc {
+  color: #94a3b8;
+}
+
+/* Tags row */
+.pc-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: auto;
+}
+
+/* Individual tech tag */
+.pc-tag {
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(6, 182, 212, 0.4);
+  color: #06b6d4;
+  background: rgba(6, 182, 212, 0.06);
+  white-space: nowrap;
+  font-weight: 500;
+  transition: background 150ms ease, border-color 150ms ease;
+}
+.pc-tag:hover {
+  background: rgba(6, 182, 212, 0.14);
+  border-color: rgba(6, 182, 212, 0.7);
+}
+
 
 /* Say Hello button */
 .say-hello-btn{ background: #06b6d4; color: #06202a; }
@@ -207,6 +315,4 @@ body {
   box-shadow: 0 6px 18px rgba(239, 68, 68, 0.12);
 }
 
-/* Reduce the hover lift for compact feel */
-:root[data-theme="dark"] .project-card:hover{ transform: translateY(-4px); }
 
