@@ -43,7 +43,7 @@ export default function About() {
             <div className="glass p-4 rounded-lg">
               <h4 className="font-semibold">Education</h4>
               <p className="text-[color:var(--muted)]">
-                B.Tech - Computer Science Engineering
+                B.E - Computer Science Engineering
               </p>
             </div>
             <div className="glass p-4 rounded-lg">
